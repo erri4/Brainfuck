@@ -24,7 +24,7 @@ def main():
         add = ''
         for char in args.string.replace("\\n", "\n").replace('\\b', '\b').replace('\\t', '\t').replace('\\r', '\r'):
             add += lst[ord(char)] + ".[-]"
-        s.write(add)
+        s.write(add.replace('[-][-]', '[-]'))
         s.write("\n==== END OF BFgen CODE ====\n")
 
 
