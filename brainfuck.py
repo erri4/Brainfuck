@@ -164,12 +164,12 @@ def main():
     with open(args.script) as f:
         script = optimize(parse(f.read(), args.debug))
     if args.compile:
-        compile(script, args.debug, args.script)
+        compile_(script, args.debug, args.script)
     else:
         interpret(script, args.debug)
 
 
-def compile(script: list[str], debug: bool = False, file: str = ''):
+def compile_(script: list[str], debug: bool = False, file: str = ''):
     def compile_to_c(tokens: list[str]):
         c_program = []
         indent_level = 1  
