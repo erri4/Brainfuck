@@ -1,0 +1,5 @@
+let stop0 in N;
+Pi_(stop0:=0)^(stop0>0) (print("hi"), stop0 := 1);
+let f: {1, 2, 3} -> Q;
+f(x) := x+3;
+print(dom(f));

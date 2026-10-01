@@ -1,0 +1,7 @@
+let val in Strings;
+val := int(input());
+let i in N; // by the way, 0 in N;
+cases{
+    print(0) if val=0,
+    Pi_(i:=0)^(i>0) (print(1)) else
+}

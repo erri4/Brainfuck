@@ -1,0 +1,19 @@
+let vec1 in Q^2;
+vec1 := (1, 2); // init;
+
+print(vec1 + (2, 3)); // vector addition;
+
+print(vec1 * (2, 3)); // vector multiplication (dot product);
+
+vec1_(1 + 0) := 5; // indexing;
+print(vec1);
+print(1/2+1/2);
+vec1_(1/2+1/2) := 10;
+print(vec1);
+vec1_0 := 3;
+print(vec1_0);
+
+// in check;
+print(vec1 in Q);
+print(vec1 in Q^2);
+print(vec1 in Q^3);

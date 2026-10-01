@@ -1,0 +1,3 @@
+let c in Strings; //Strings is the set of all strings;
+c := "Hello, World"; // := is needed for assigning. = is used for comparison;
+print(c);

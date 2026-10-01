@@ -1,0 +1,44 @@
+let arr in Z^256;
+arr := nullVector(256);
+let ptr in N;
+ptr := 0;
+let size in N;
+size := 256;
+
+// +;
+arr_ptr := arr_ptr + 1;
+
+// -;
+arr_ptr := arr_ptr - 1;
+
+// >;
+ptr := ptr + 1;
+
+// <;
+ptr := ptr - 1;
+
+// [];
+let code in N;
+code := 3; // IDK, some code;
+Pi_(ptr := ptr)^(arr_ptr = 0) (code);
+
+
+ptr := 300;
+
+// extending:;
+arr_100 := 3;
+let tmp in Q^256;
+let stop0 in N;
+let stop1 in N;
+let tmptr in N;
+let extend: N -> EMPTYSET;
+extend() := Pi_(stop0 in {0}) (
+    (Pi_(stop1 in {0}) (tmp := nullVector(ptr + 1))),
+    (Pi_(tmptr := 0)^(tmptr >= size) (tmp_tmptr := arr_tmptr, tmptr := tmptr + 1)),
+    size := ptr + 1,
+    arr := tmp
+);
+cases{
+    extend() if (ptr >= size)
+};
+print(arr);

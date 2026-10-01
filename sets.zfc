@@ -1,0 +1,43 @@
+// 2^ALEPH_0=ALEPH_1;
+print(2^ALEPH_0);
+
+// P({1, 2, 3}) = {{}, {1}, {2}, {3}, {1, 2}, {1, 3}, {2, 3}, {1, 2, 3}};
+print(P({1, 2, 3}));
+
+// True;
+print({1, 2, 1/2} in P(Q));
+
+// ALEPH_1 set;
+print(|P(Q)|);
+
+let prod in Q;
+let i in N;
+prod := Pi_(i in {1, 2, 3}) (i); // loop on sets with prod;
+print(prod);
+
+let cp in Set;
+cp := Cap_(i in {{1, 2}, {2, 3}}) (i); // loop on sets with cap;
+print(cp);
+
+// intersect;
+print({1, 2} & {4, 5});
+
+let r in Q;
+r := Sigma_(i:=0)^(i=10) (i:=i+1, i-1); // loop with sigma;
+print(r);
+
+// values check;
+let z in Q;
+z := 1/2;
+print(z);
+print(z in Z);
+print(z in Q);
+print((z in Q) in Bool);
+
+print(|Q|); // abs check;
+
+// more value checks;
+print(|Q| in Cardinals);
+print(1 in (Q or {(1, 2)}));
+print((1, 2) in (Q or {(1, 2)}));
+print(Q)
