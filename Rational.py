@@ -1,22 +1,19 @@
-from math import floor, gcd
+from typing import TypeAlias
+from math import floor, ceil, gcd
 
-type Number = Rational | int | float
+Number: TypeAlias = "Rational | int | float"
 
 
-class Rational(int):
-    def __new__(cls, p: "int | float | Rational", q: int | None = None): # p/q
-        if q is None:
-            if type(p) is int: return p
-            if type(p) is float:
-                return Rational.from_float(p) # Use Rational.from_float(num) not Rational(num)
-            if type(p) is Rational:
-                return p
-        if q == 0 or q is None:
-            raise ZeroDivisionError("division by zero")
-        if q < 0 and p < 0:
+class Rational:
+    # class things
+
+    def __new__(cls, p: int, q: int): # p/q
+        if q == 0:
+            raise ZeroDivisionError("Division by zero")
+        if q < 0:
             q = -q
             p = -p
-        gdcpq = gcd(p, q)
+        gdcpq = gcd(abs(p), q)
         p /= gdcpq
         q /= gdcpq
         if q == 1:
@@ -24,12 +21,13 @@ class Rational(int):
         instance = super().__new__(cls)
         return instance
     
-    def __init__(self, p: int, q: int | None = None):
-        if q is None:
-            return
+    def __init__(self, p: int, q: int):
         if q == 0:
             raise ZeroDivisionError("division by zero")
-        gdcpq = gcd(p, q)
+        if q < 0:
+            q = -q
+            p = -p
+        gdcpq = gcd(abs(p), q)
         p /= gdcpq
         q /= gdcpq
         self.p = int(p)
@@ -49,6 +47,8 @@ class Rational(int):
     def __str__(self):
         return f'{self.p}/{self.q}'
     
+    # math operators
+    
     def __add__(self, other: Number):
         if isinstance(other, Rational):
             return Rational(self.p*other.q + other.p*self.q, self.q*other.q)
@@ -56,9 +56,11 @@ class Rational(int):
             return Rational(self.p + self.q*other, self.q)
         return self + Rational.from_float(other)
 
+        
     def __sub__(self, other: Number):
         return self + (-other)
         
+    
     def __mul__(self, other: Number):
         if type(other) is Rational:
             return Rational(self.p*other.p, self.q*other.q)
@@ -66,6 +68,7 @@ class Rational(int):
             return Rational(self.p*other, self.q)
         return self * Rational.from_float(other)
     
+
     def __pow__(self, other: Number):
         if type(other) is int:
             return Rational(self.p ** other, self.q ** other)
@@ -83,6 +86,7 @@ class Rational(int):
         if type(other) == int:
             return Rational(self.p, self.q*other)
         return self / Rational.from_float(other)
+    # right hand operators
 
     def __rtruediv__(self, other: Number):
         if type(other) is Rational:
@@ -103,10 +107,12 @@ class Rational(int):
         if type(other) is int:
             return Rational(self.p + self.q*other, self.q)
         return self + Rational.from_float(other)
+
         
     def __rsub__(self, other: Number):
         return (-self) + other
         
+    
     def __rmul__(self, other: Number):
         if type(other) is Rational:
             return Rational(self.p*other.p, self.q*other.q)
@@ -114,10 +120,13 @@ class Rational(int):
             return Rational(self.p*other, self.q)
         return self * Rational.from_float(other)
     
+
     def __rpow__(self, other: Number):
         if round(other ** (1/self.q))**self.q == other:
             return round(other ** (1/self.q)) ** self.p
         return Rational.from_float((other ** (1/self.q)) ** self.p)
+
+    # comparators
 
     def __eq__(self, other: Number):
         if type(other) is Rational:
@@ -128,28 +137,30 @@ class Rational(int):
     
     def __le__(self, other: Number):
         diff = (self - other)
-        if type(diff) is int: return diff <= 0
+        if isinstance(diff, int): return diff <= 0
         return diff.p <= 0 or diff.q < 0
     
     def __lt__(self, other: Number):
         diff = (self - other)
-        if type(diff) is int: return diff < 0
+        if isinstance(diff, int): return diff < 0
         return diff.p < 0 or diff.q < 0
     
     def __ne__(self, other: Number):
         diff = (self - other)
-        if type(diff) is int: return diff != 0
+        if isinstance(diff, int): return diff != 0
         return diff.p != 0
     
     def __gt__(self, other: Number):
         diff = (self - other)
-        if type(diff) is int: return diff > 0
+        if isinstance(diff, int): return diff > 0
         return diff.p > 0 and diff.q > 0
     
     def __ge__(self, other: Number):
         diff = (self - other)
-        if type(diff) is int: return diff >= 0
+        if isinstance(diff, int): return diff >= 0
         return diff.p >= 0 and diff.q > 0
+
+    # unary operators
 
     def __invert__(self):
         return 1 / self
@@ -163,8 +174,11 @@ class Rational(int):
     def __abs__(self):
         return Rational(abs(self.p), abs(self.q))
     
-    def __round__(self, n: int):
-        if n == 0 or n is None: return self.p // self.q
+    def __round__(self, n: int | None = None):
+        if n == 0 or n is None:
+            if abs(self - floor(self)) > abs(self - ceil(self)):
+                return ceil(self)
+            return floor(self)
         return round(self.to_float(), n)
 
     def __floor__(self):
@@ -175,6 +189,3 @@ class Rational(int):
 
     def __hash__(self):
         return hash((self.p, self.q))
-
-    def __contains__(self, item): # for zfc
-        return item == self.p or item == self.q
